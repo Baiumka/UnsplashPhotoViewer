@@ -3,13 +3,20 @@ package com.example.unsplashphotoviewer
 import android.content.pm.ActivityInfo
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.viewpager2.widget.ViewPager2
 
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var adapter: ViewerAdapter
-    private lateinit var viewPager: ViewPager2
+
+
+    companion object{
+        lateinit var viewPager: ViewPager2
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,9 +26,20 @@ class MainActivity : AppCompatActivity() {
         adapter = ViewerAdapter(this)
         viewPager = findViewById(R.id.pager)
         viewPager.adapter = adapter
+        viewPager.currentItem = 1
+        viewPager.currentItem = 0
+    }
 
-        //Тестовая штука
-        val kek = UnsplashLoader()
-        kek.getData()
+    fun onStartClick(view: View)
+    {
+        adapter.listFragmentListeners.forEach()
+        {
+            it.onStartClicked()
+        }
+    }
+
+    fun backButtonClick(view: View)
+    {
+        viewPager.currentItem = 0
     }
 }

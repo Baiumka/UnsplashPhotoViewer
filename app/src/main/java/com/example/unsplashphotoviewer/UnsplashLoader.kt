@@ -7,20 +7,22 @@ import kotlinx.serialization.json.*
 import java.net.HttpURLConnection
 import java.net.URL
 import java.nio.charset.Charset
+import java.sql.Time
+import kotlin.random.Random
 
 class UnsplashLoader : IDataLoader {
 
     private val HOST = "https://api.unsplash.com/";
     private val API_KEY = "ab3411e4ac868c2646c0ed488dfd919ef612b04c264f3374c97fff98ed253dc9";
-    private val JsonIgnoreKeys = Json { ignoreUnknownKeys = true }
+    private val JsonIgnoreKeys = Json { ignoreUnknownKeys = true; coerceInputValues = true}
     private var listeners: List<IDataLoaderListener> = ArrayList()
 
-    fun addListener(newListener : IDataLoaderListener)
+    override fun addListener(newListener : IDataLoaderListener)
     {
         listeners += newListener
     }
 
-    fun removeListener(oldListener : IDataLoaderListener)
+    override fun removeListener(oldListener : IDataLoaderListener)
     {
         if(listeners.contains(oldListener))
             listeners -= oldListener
@@ -29,7 +31,9 @@ class UnsplashLoader : IDataLoader {
     override fun getData() {
         Thread {
             try {
-                val urlString = "$HOST/photos?client_id=$API_KEY&page=1"
+                val randomPage = Random.nextInt(1, 10)
+
+                val urlString = "$HOST/p1hotos?client_id=$API_KEY&page=$randomPage"
                 val url = URL(urlString)
                 with(url.openConnection() as HttpURLConnection) {
                     requestMethod = "GET"
